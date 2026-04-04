@@ -1,0 +1,14 @@
+class Solution:
+    # @param A : list of integers
+    # @return a list of integers
+    def solve(self, A):
+        max_val=max(A)
+        factors = self.precomputer(max_val)
+        A.sort(key=lambda x:(factors[x],x))
+        return A
+    def precomputer(self,max_val):
+        factors = [0]*(max_val+1)
+        for i in range(1,max_val+1):
+            for j in range(i,max_val+1,i):
+                factors[j]+=1
+        return factors
