@@ -1,0 +1,24 @@
+class Solution:
+    # @param A : list of integers
+    # @return a list of integers
+    def solve(self, A):
+        def partition(l,r):
+            pivot = A[r]
+            i = l
+            for j in range(l,r):
+                if A[j]<=pivot:
+                    A[i], A[j] = A[j], A[i]
+                    i+=1
+            A[i], A[r] = A[r], A[i]
+            return i
+        def quickSort(A,l,r):
+            if l>=r:
+                return
+            pivot = partition(l,r)
+            quickSort(A,l,pivot-1)
+            quickSort(A,pivot+1,r)
+        quickSort(A,0,len(A)-1)
+        return A
+        
+            
+
