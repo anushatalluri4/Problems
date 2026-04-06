@@ -1,0 +1,29 @@
+class Solution:
+    # @param A : list of integers
+    # @param B : integer
+    # @return an integer
+    def solve(self, A, B):
+        A.sort()
+        low = 1
+        high = A[-1]-A[0]
+        ans = low
+        while low<=high:
+            mid = low + (high-low)//2
+            if self.isPossible(A,B,mid):
+                ans = mid
+                low = mid + 1
+            else:
+                high = mid - 1
+        return ans
+    def isPossible(self,A,B,min_dist_allowed):
+        last_location = A[0]
+        cows = 1
+        for i in A:
+            if i-last_location>=min_dist_allowed:
+                cows+=1
+                last_location = i
+            if cows == B:
+                return True
+        return False
+
+            
