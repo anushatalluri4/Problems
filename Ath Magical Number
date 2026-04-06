@@ -1,0 +1,27 @@
+class Solution:
+    # @param A : integer
+    # @param B : integer
+    # @param C : integer
+    # @return an integer
+    def solve(self, A, B, C):
+        l = 1
+        ans = 0
+        h = min(B,C)*A
+        lcm = (B*C)/self.gcd(B,C)
+        while l<=h:
+            mid = l+(h-l)//2
+            count = mid//B + mid//C - mid//lcm
+            if count<A:
+                l = mid + 1
+            else:
+                ans = mid
+                h = mid - 1
+        return ans
+            
+    def gcd(self,a,b):
+        if a<b:
+            a, b = b, a
+            if b==0:
+                return a
+        return self.gcd(a%b,b)
+    
