@@ -1,0 +1,32 @@
+class Solution:
+    # @param A : integer
+    # @param B : integer
+    # @param C : list of integers
+    # @return an integer
+    def paint(self, A, B, C):
+        # low  = max(C[i]*B)
+        # high = sum(C[i]*B)
+        low = max(C)*B
+        high = sum(C)*B
+        ans = high
+        while low <= high:
+            mid = (low+high)//2
+            if self.isPossible(C,mid,B,A):
+                ans = mid
+                high = mid-1
+            else:
+                low = mid + 1
+        return ans%10000003
+    def isPossible(self,C,t,B,A):
+        painters = 1
+        curr_time = 0
+        for i in C:
+            curr_time += i*B
+            if curr_time>t:
+                painters += 1
+                curr_time = i*B
+            if painters > A:
+                return False
+        return True
+
+
