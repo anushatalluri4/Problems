@@ -1,0 +1,19 @@
+class Solution:
+    def solve(self, A, B):
+        s = set(A)
+        ans = 0
+
+        if B == 0:
+            freq = {}
+            for x in A:
+                freq[x] = freq.get(x, 0) + 1
+
+            for val in freq:
+                if freq[val] > 1:
+                    ans += 1
+        else:
+            for x in s:
+                if x + B in s:
+                    ans += 1
+
+        return ans
