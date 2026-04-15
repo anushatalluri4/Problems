@@ -1,0 +1,43 @@
+class Solution:
+    # @param A : list of integers
+    # @return an integer
+    def largestRectangleArea(self, A):
+        left = self.prevSmaller(A)
+        right = self.nextSmaller(A)
+
+        maxarea = 0
+
+        for i in range(len(A)):
+            ht = A[i]
+            width = right[i] - left[i] - 1
+            area = ht * width
+            maxarea = max(maxarea, area)
+
+        return maxarea
+
+    def prevSmaller(self, A):
+        stack = []
+        ans = [0] * len(A)
+
+        for i in range(len(A)):
+            while stack and A[stack[-1]] >= A[i]:
+                stack.pop()
+
+            ans[i] = stack[-1] if stack else -1
+            stack.append(i)
+
+        return ans
+
+    def nextSmaller(self, A):
+        stack = []
+        n = len(A)
+        ans = [0] * n
+
+        for i in range(n - 1, -1, -1):
+            while stack and A[stack[-1]] >= A[i]:
+                stack.pop()
+
+            ans[i] = stack[-1] if stack else n
+            stack.append(i)
+
+        return ans
