@@ -1,0 +1,19 @@
+from collections import deque
+
+class Solution:
+    def solve(self, A):
+        q = deque(["1", "2"])
+
+        count = 0
+
+        while True:
+            cur = q.popleft()
+            count += 1
+
+            perfect = cur + cur[::-1]
+
+            if count == A:
+                return perfect
+
+            q.append(cur + "1")
+            q.append(cur + "2")
