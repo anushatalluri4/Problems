@@ -1,0 +1,19 @@
+class Solution:
+    def lca(self, A, B, C):
+        ans = self.findLCA(A, B, C)
+        return ans.val if ans else -1
+
+    def findLCA(self, root, B, C):
+        if not root:
+            return None
+
+        if root.val == B or root.val == C:
+            return root
+
+        left = self.findLCA(root.left, B, C)
+        right = self.findLCA(root.right, B, C)
+
+        if left and right:
+            return root
+
+        return left if left else right
