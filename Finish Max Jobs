@@ -1,0 +1,13 @@
+class Solution:
+    def solve(self, A, B):
+        intervals = sorted(zip(A, B), key=lambda x: x[1])
+
+        count = 1
+        lastEndTime = intervals[0][1]
+
+        for s, e in intervals[1:]:
+            if s >= lastEndTime:   # or > depending on problem statement
+                count += 1
+                lastEndTime = e
+
+        return count
