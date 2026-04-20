@@ -1,0 +1,16 @@
+import heapq
+
+class Solution:
+    def solve(self, A, B):
+        MOD = 10**9 + 7
+        
+        items = sorted(zip(A, B), key=lambda x: x[0])
+        heap = []
+
+        for expiry, profit in items:
+            if len(heap) < expiry:
+                heapq.heappush(heap, profit)
+            elif heap and heap[0] < profit:
+                heapq.heapreplace(heap, profit)
+
+        return sum(heap) % MOD
