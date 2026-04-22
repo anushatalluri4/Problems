@@ -1,0 +1,23 @@
+import math
+class Solution:
+    # @param A : list of integers
+    # @param B : list of integers
+    # @param C : integer
+    # @return an integer
+    def solve(self, A, B, C):
+        items = []
+        for i in range(len(A)):
+            ratio = A[i]/B[i]
+            items.append((ratio,A[i],B[i]))
+        items.sort(reverse=True)
+        res = 0.0
+        for ratio,hap,wei in items:
+            if C>=wei:
+                res += hap
+                C-=wei
+            else:
+                res += C*ratio
+                break
+        res = res*100
+        return math.floor(res+1e-9)
+
