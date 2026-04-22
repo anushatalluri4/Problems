@@ -1,0 +1,11 @@
+class Solution:
+    # @param A : list of integers
+    # @param B : list of integers
+    # @param C : integer
+    # @return an integer
+    def solve(self, A, B, C):
+        dp = [0]*(C+1)
+        for i in range(len(B)):
+            for w in range(C,B[i]-1,-1):
+                dp[w] = max(dp[w],A[i]+dp[w-B[i]])
+        return dp[C]
