@@ -1,0 +1,40 @@
+class Solution:
+    def solve(self, A, B):
+        adj = [[] for _ in range(A + 1)]
+        
+        for u, v in B:
+            adj[u].append(v)
+        
+        visited = [0] * (A + 1)  
+        # 0 = unvisited, 1 = visiting, 2 = done
+        
+        for start in range(1, A + 1):
+            if visited[start] != 0:
+                continue
+            
+            stack = [(start, 0)]  # (node, state)
+            
+            while stack:
+                node, state = stack.pop()
+                
+                if state == 0:
+                    if visited[node] == 1:
+                        return 1   # cycle found
+                    
+                    if visited[node] == 2:
+                        continue
+                    
+                    visited[node] = 1  # mark visiting
+                    
+                    stack.append((node, 1))  # process after children
+                    
+                    for nei in adj[node]:
+                        if visited[nei] == 1:
+                            return 1
+                        if visited[nei] == 0:
+                            stack.append((nei, 0))
+                
+                else:
+                    visited[node] = 2  # mark done
+        
+        return 0
