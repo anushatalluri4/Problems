@@ -1,0 +1,50 @@
+class Solution:
+    def canPartitionKSubsets(self, A, B):
+        total = sum(A)
+        
+        if total % B != 0:
+            return 0
+        
+        target = total // B
+        
+        # 🔥 optimization: sort descending
+        A.sort(reverse=True)
+        
+        if A[0] > target:
+            return 0
+        
+        vis = [False] * len(A)
+        
+        return int(self.backtrack(A, B, 0, 0, target, vis))
+
+    def backtrack(self, A, B, index, currSum, target, vis):
+        # ✅ last subset automatically valid
+        if B == 1:
+            return True
+        
+        # ✅ current subset completed
+        if currSum == target:
+            return self.backtrack(A, B - 1, 0, 0, target, vis)
+        
+        for i in range(index, len(A)):
+            
+            if vis[i]:
+                continue
+            
+            if currSum + A[i] > target:
+                continue
+            
+            # choose
+            vis[i] = True
+            
+            if self.backtrack(A, B, i + 1, currSum + A[i], target, vis):
+                return True
+            
+            # backtrack
+            vis[i] = False
+            
+            # 🔥 pruning: avoid useless permutations
+            if currSum == 0:
+                return False
+        
+        return False
