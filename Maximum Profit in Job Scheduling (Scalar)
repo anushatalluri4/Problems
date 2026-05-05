@@ -1,0 +1,32 @@
+class Solution:
+    # @param A : list of integers
+    # @param B : list of integers
+    # @param C : list of integers
+    # @return an integer
+    def jobScheduling(self, A, B, C):
+        arr = [(s,e,p) for s,e,p in zip(A,B,C)]
+        arr.sort(key=lambda x: x[1])
+        dp = [-1]*len(A)
+        dp[0]=arr[0][2]
+        for i in range(1,len(arr)):
+            incl = arr[i][2]
+            idx = self.findNonOver(i, arr)
+
+            if idx != -1:
+                incl += dp[idx]
+
+            dp[i] = max(dp[i-1], incl)
+        return dp[len(A)-1]
+    def findNonOver(self,i,arr):
+        l,h=0,i
+        ans = -1
+        while l<=h:
+            mid = (l+h)//2
+            if arr[mid][1]<=arr[i][0]:
+                ans = mid
+                l = mid+1
+            else:
+                h = mid-1
+        return ans
+
+
