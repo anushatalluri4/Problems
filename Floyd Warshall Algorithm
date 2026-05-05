@@ -1,0 +1,29 @@
+class Solution:
+    def solve(self, A):
+        n = len(A)
+        INF = float('inf')
+        
+        # Step 1: copy + convert -1 to INF
+        dist = [row[:] for row in A]
+        
+        for i in range(n):
+            for j in range(n):
+                if dist[i][j] == -1:
+                    dist[i][j] = INF
+            dist[i][i] = 0
+        
+        # Step 2: Floyd-Warshall
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    if dist[i][k] != INF and dist[k][j] != INF:
+                        dist[i][j] = min(dist[i][j],
+                                         dist[i][k] + dist[k][j])
+        
+        # Step 3: convert INF back to -1
+        for i in range(n):
+            for j in range(n):
+                if dist[i][j] == INF:
+                    dist[i][j] = -1
+        
+        return dist
