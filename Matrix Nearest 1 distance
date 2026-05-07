@@ -1,0 +1,24 @@
+from collections import deque
+class Solution:
+    # @param A : list of list of integers
+    # @return a list of list of integers
+    def solve(self, A):
+        rows, cols = len(A), len(A[0])
+        d = [[-1] * cols for _ in range(rows)]
+        directions = [(1,0), (-1,0), (0,1), (0,-1)]
+        q=deque()
+        for r in range(rows):
+            for c in range(cols):
+                if A[r][c]==1:
+                    d[r][c]=0
+                    q.append((r,c))
+        while q:
+            r,c = q.popleft()
+            for dx,dy in directions:
+                nx, ny = dx+r, dy+c 
+                if 0<=nx<rows and 0<=ny<cols and d[nx][ny] == -1:
+                    d[nx][ny]=d[r][c]+1
+                    q.append((nx,ny))
+        return d
+
+
