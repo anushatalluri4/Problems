@@ -1,0 +1,58 @@
+class Solution:
+	# @param A : integer
+	# @param B : integer
+	# @param C : integer
+	# @param D : list of integers
+	# @param E : list of integers
+	# @param F : list of integers
+	# @param G : list of integers
+	# @param H : list of integers
+	# @return a list of integers
+	def solve(self, A, B, C, D, E, F, G, H):
+        INF = float('inf')
+
+        # distance matrix
+        dist = [[INF] * A for _ in range(A)]
+
+        # distance to itself = 0
+        for i in range(A):
+            dist[i][i] = 0
+
+        # fill given roads
+        for u, v, w in zip(D, E, F):
+
+            u -= 1
+            v -= 1
+
+            # multiple edges possible
+            dist[u][v] = min(dist[u][v], w)
+            dist[v][u] = min(dist[v][u], w)
+
+        # Floyd Warshall
+        for k in range(A):
+            for i in range(A):
+                for j in range(A):
+
+                    if dist[i][k] != INF and dist[k][j] != INF:
+                        dist[i][j] = min(
+                            dist[i][j],
+                            dist[i][k] + dist[k][j]
+                        )
+
+        # answer queries
+        ans = []
+
+        for s, d in zip(G, H):
+
+            s -= 1
+            d -= 1
+
+            if dist[s][d] == INF:
+                ans.append(-1)
+            else:
+                ans.append(dist[s][d])
+
+        return ans
+		
+
+        
