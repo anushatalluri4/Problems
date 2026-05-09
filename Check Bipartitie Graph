@@ -1,0 +1,25 @@
+from collections import deque
+class Solution:
+    # @param A : integer
+    # @param B : list of list of integers
+    # @return an integer
+    def solve(self, A, B):
+        adj = [[] for i in range(A)]
+        for u,v in B:
+            adj[u].append(v)
+            adj[v].append(u)
+        color = [-1]*(A)
+        for start in range(A):
+            if color[start]!=-1:
+                continue
+            color[start]=0
+            q = deque([start])
+            while q:
+                node = q.popleft()
+                for nei in adj[node]:
+                    if color[nei]==-1:
+                        color[nei] = 1-color[node]
+                        q.append(nei)
+                    elif color[nei] == color[node]:
+                        return 0
+        return 1
