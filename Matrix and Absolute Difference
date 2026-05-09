@@ -1,0 +1,46 @@
+class Solution:
+    # @param A : integer
+    # @param B : integer
+    # @param C : list of list of integers
+    # @return an integer
+    def solve(self, A, B, C):
+        parent = list(range(A*B))
+        rank = [0]*(A*B)
+        def find(x):
+            while parent[x]!=x:
+                parent[x] = parent[parent[x]]
+                x=parent[x]
+            return x
+        def union(x,y):
+            px,py = find(x),find(y)
+            if px == py:
+                return False
+            if rank[px]<rank[py]:
+                parent[px]=py
+            elif rank[py]<rank[px]:
+                parent[py]=px
+            else:
+                parent[py]=px
+                rank[px]+=1
+            return True
+        edges = []
+        for i in range(A):
+            for j in range(B):
+                node = i*B+j
+                if j+1<B:
+                    w = abs(C[i][j]-C[i][j+1])
+                    edges.append((w,node,node+1))
+                if i+1<A:
+                    w = abs(C[i][j]-C[i+1][j])
+                    edges.append((w,node,node+B))
+        edges.sort()
+        components = A*B
+        min_k = 0
+        for w,u,v in edges:
+            if union(u,v):
+                components-=1
+                min_k=w
+                if components == 1:
+                    break
+        return min_k
+
