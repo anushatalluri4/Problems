@@ -1,0 +1,57 @@
+import heapq
+
+class Solution:
+    def solve(self, A, B):
+
+        adj = [[] for _ in range(A + 1)]
+
+        for i, (u, v, w) in enumerate(B):
+            adj[u].append((v, w, i))
+            adj[v].append((u, w, i))
+
+        INF = float('inf')
+        ans = INF
+
+        def dijkstra(src, dest, banned_edge):
+
+            dist = [INF] * (A + 1)
+            dist[src] = 0
+
+            pq = [(0, src)]
+
+            while pq:
+
+                d, node = heapq.heappop(pq)
+
+                if d > dist[node]:
+                    continue
+
+                if node == dest:
+                    return d
+
+                for nei, wt, idx in adj[node]:
+
+                    if idx == banned_edge:
+                        continue
+
+                    nd = d + wt
+
+                    if nd < dist[nei]:
+                        dist[nei] = nd
+                        heapq.heappush(pq, (nd, nei))
+
+            return INF
+
+        for i, (u, v, w) in enumerate(B):
+
+            # self loop
+            if u == v:
+                ans = min(ans, w)
+                continue
+
+            shortest = dijkstra(u, v, i)
+
+            if shortest != INF:
+                ans = min(ans, shortest + w)
+
+        return ans if ans != INF else -1
