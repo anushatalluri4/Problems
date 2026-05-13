@@ -1,0 +1,44 @@
+from collections import deque
+class Solution:
+    # @param A : integer
+    # @param B : list of list of integers
+    # @param C : list of list of integers
+    # @return an integer
+    def solve(self, A, B, C):
+        MOD = 10**9 + 7
+        parent = [i for i in range(A+1)]
+        rank = [0 for i in range(A+1)]
+        def find(x):
+            while parent[x]!=x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+        def union(x,y):
+            px, py = find(x), find(y)
+            if px==py:
+                return False
+            elif rank[px]<py:
+                parent[px] = py
+            else:
+                parent[py]=px
+                rank[px]+=1
+            return True
+        walk = set()
+        talk = set()
+        for u, v in B:
+            walk.add(u)
+            walk.add(v)
+            union(u,v)
+        for u, v in C:
+            if u in walk or v in walk:
+                return 0
+            talk.add(u)
+            talk.add(v)
+            union(u,v)
+        comp = set()
+        for i in range(1,A+1):
+            comp.add(find(i))
+        return (2**len(comp)) % MOD
+
+
+
